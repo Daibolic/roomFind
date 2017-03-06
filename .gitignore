@@ -1,3 +1,4 @@
 *.pyc
 tags
 .vscode/
+room_info
