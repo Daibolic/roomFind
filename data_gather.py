@@ -18,7 +18,7 @@ def find_subpages(url):
     return result
 
 def find_room_time(url):
-    """ returns list of (room_name, time_occupied) tuples from url"""
+    """ returns list of (room_name, days, time_occupied) tuples from url"""
     print("Gathering room and timings from: "+url)
     page = requests.get(url)
     tree = html.fromstring(page.content)
@@ -26,9 +26,10 @@ def find_room_time(url):
     result = []
     for pattern in meet_patterns:
         room = pattern.xpath('.//a/text()')
+        days = pattern.xpath('.//span[@class="tooltip-iws"]/text()')
         time = pattern.xpath('.//time//text()')
-        if (len(room) > 0) and (len(time) > 0):
-            result.append((room[0], time[0]))
+        if (len(room) > 0) and (len(time) > 0 and len(days) > 0):
+            result.append((room[0], days[0], time[0]))
     return result
 
 def get_building_codes(url):
@@ -57,5 +58,5 @@ def get_all_room_time():
         all_rm_tm = all_rm_tm + rm_tm
     fileobject = open("room_info", "w")
     for entry in all_rm_tm:
-        fileobject.write(entry[0]+","+entry[1]+"\n")
+        fileobject.write(entry[0]+","+entry[1]+","+entry[2]+"\n")
     fileobject.close()
