@@ -9,12 +9,13 @@ class Time:
 		""" 
 			Initializes a Time object using hour and minute.
 			Both hour and minute are integers, in 24 hour format
+			From 00:00 to 23:59 with noon at 12:00
 		"""
 		self.hour = hour;
 		self.minute = minute;
 
 	@classmethod
-	def fromString(cls):
+	def fromString(cls, timeStr):
 		"""
 			Creates a Time object from a string.
 			Format supported:
@@ -31,6 +32,9 @@ class Time:
 		if (mo1):
 			hr = int( time[:-2] )
 			mn = int( time[-2:] )
+			if (hr > 24 or mn > 59):
+				# print("Not a valid time")
+				return None
 			return cls(hr, mn)
 		# times separated by :, no AM/PM
 		mo2 = re.fullmatch(r'[0-9]{1,2}:[0-9]{1,2}', time)
@@ -38,8 +42,46 @@ class Time:
 			lst = time.split(":")
 			hr = int(lst[0])
 			mn = int(lst[1])
+			if (hr > 24 or mn > 59):
+				# print("Not a valid time")
+				return None
 			return cls(hr, mn)
 		# digits + AM/PM
 		mo3 = re.fullmatch(r'[0-9]{3,4}(am|pm)', time, re.I)
+		if (mo3):
+			apm = time[-2:].lower()
+			hr = int(time[:-4])
+			mn = int(time[-4:-2])
+			if (apm == "am"):	
+				if (hr > 11 or mn > 59):
+					# print("Not a valid time")
+					return None
+				return cls(hr, mn)
+			else:
+				if (hr > 12 or hr < 1 or mn > 59):
+					# print("Not a valid time")
+					return None
+				if ( not hr == 12):
+					hr = hr+12
+				return cls(hr, mn)
 		# digits:digits + AM/PM
 		mo4 = re.fullmatch(r'[0-9]{1,2}:[0-9]{2}(am|pm)', time, re.I)
+		if (mo4):
+			apm = time[-2:].lower()
+			lst = time[:-2].split(":")
+			hr = int(lst[0])
+			mn = int(lst[1])
+			if (apm == "am"):
+				if (hr > 11 or mn > 59):
+					# print("Not a valid time")
+					return None
+				return cls(hr, mn)
+			else:
+				if (hr > 12 or hr < 1 or mn > 59):
+					# print("Not a valid time")
+					return None
+				if ( not hr == 12):
+					hr = hr+12
+				return cls(hr, mn)
+		# print("Not a supported time format")
+		return None
