@@ -85,3 +85,28 @@ class Time:
 				return cls(hr, mn)
 		# print("Not a supported time format")
 		return None
+
+
+	def __add__(self, other):
+		""" overloading + operator for Time objects"""
+
+	def __sub__(self, other):
+		""" Overloading - operator for Time objects"""
+
+	def __eq__(self, other):
+		""" Overloading == operator for Time objects"""
+
+	def __ne__(self, other):
+		""" Overloading != operator for time objects"""
+
+	def __lt__(self, other):
+		""" Overlaoding < operator for time objects"""
+
+	def __le__(self, other):
+		""" Overloading <= operator for time objects"""
+
+	def __gt__(self, other):
+		""" Overloading > operator for time objects"""
+
+	def __ge__(self, other):
+		""" Overloading >= operator for time objects"""
