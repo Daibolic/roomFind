@@ -9,7 +9,9 @@ def main():
     if not has_file:
         print("File room_info is missing, generating...")
         data_gather.get_all_room_time()
-    print("room_info file found")
+        print("Info gathered. Stored in file room_info.")
+    else:
+        print("room_info file found")
     return
 
 if __name__ == "__main__":
