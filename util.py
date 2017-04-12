@@ -1,4 +1,4 @@
-""" This is the utility class. Contains utility classes for time and room representation"""
+""" This is the utility class. Contains utility classes for time and room representations"""
 
 import re
 
