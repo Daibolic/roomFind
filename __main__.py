@@ -1,3 +1,4 @@
+#! usr/bin/env python3
 """This is the main module"""
 
 import os.path
@@ -12,6 +13,14 @@ def main():
         print("Info gathered. Stored in file room_info.")
     else:
         print("room_info file found")
+
+    has_code = os.path.isfile("./bld_code")
+    if not has_code:
+        print("File bld_info is missing, generating...")
+        data_gather.generate_building_codes()
+        print("Building codes gathered. Stored in file bld_code.")
+    else:
+        print("Building codes file found")
     return
 
 if __name__ == "__main__":

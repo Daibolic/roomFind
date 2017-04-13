@@ -5,6 +5,7 @@ import requests
 
 
 BASEURL = "https://classes.cornell.edu/browse/roster/SP17"
+CODEURL = "https://registrar.cornell.edu/spaces/building-codes"
 
 def find_subpages(url):
     """ returns a list of subpages to visit from url """
@@ -39,8 +40,11 @@ def get_building_codes(url):
     rows = tree.xpath('//tbody/tr')
     result = []
     for row in rows:
-        code = row.xpath('.//td[@headers="view-field-building-code-table-column"]/text()[4]')[0]
-        codestripped = code.strip('\n')
+        code = row.xpath('.//td[@headers="view-field-building-code-table-column"]/text()')
+        codestripped = code[0].strip('\n').strip()
+        print(codestripped)
+        if (codestripped == ""):
+            continue
         fullname = row.xpath('.//td[@headers="view-name-table-column"]/a/text()')[0]
         result.append((codestripped, fullname))
     return result
@@ -60,3 +64,14 @@ def get_all_room_time():
     for entry in all_rm_tm:
         fileobject.write(entry[0]+","+entry[1]+","+entry[2]+"\n")
     fileobject.close()
+
+def generate_building_codes():
+    """
+    Writes the full list of buildings and their corresponding codes to file bld_code.
+    Overwrites the original file.
+    """
+    codes = get_building_codes(CODEURL)
+    fileObject = open("bld_code", "w")
+    for entry in codes:
+        fileObject.write(entry[0]+","+entry[1]+"\n")
+    fileObject.close()
